@@ -2,11 +2,19 @@ import React, { Component } from "react";
 import NewTeamForm from "./components/NewTeamForm";
 import TeamContainer from "./components/TeamContainer";
 import "./App.css";
+import ls from "local-storage";
+
 export default class App extends Component {
   state = {
     teams: [],
     showRoundEdit: true
   };
+
+  componentDidMount() {
+    this.setState({
+      teams: ls.get("teams") || []
+    });
+  }
 
   addTeam = team => {
     const { teams } = this.state;
@@ -49,12 +57,14 @@ export default class App extends Component {
     this.setState({
       teams: [...teams, newTeam]
     });
+    ls.set("teams", [...teams, newTeam]);
   };
 
   clearScores = () => {
     this.setState({
       teams: []
     });
+    ls.set("teams", []);
   };
   updateTeamScore = (team, score, round) => {
     const { teams } = this.state;
@@ -64,6 +74,7 @@ export default class App extends Component {
         teams[i].total = teams[i].scores.reduce((a, c) => a + c);
       }
       this.setState({});
+      ls.set("teams", [...teams]);
     }
   };
 

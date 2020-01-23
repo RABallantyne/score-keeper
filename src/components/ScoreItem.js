@@ -2,8 +2,8 @@ import React, { Component } from "react";
 
 export default class ScoreItem extends Component {
   state = {
-    score: 0,
-    showScoreForm: true
+    score: this.props.roundScore,
+    showScoreForm: this.props.roundScore ? false : true
   };
 
   changeScore = event => {
@@ -23,9 +23,6 @@ export default class ScoreItem extends Component {
     event.preventDefault();
     this.props.updateScore(team.id, this.state.score, index);
     this.toggleScoreForm();
-    this.setState({
-      score: 0
-    });
   };
 
   toggleScoreForm = () => {
@@ -34,25 +31,30 @@ export default class ScoreItem extends Component {
           showScoreForm: false
         })
       : this.setState({
+          score: 0,
           showScoreForm: true
         });
   };
   render() {
+    // console.log(this.props.roundScore);
     return (
       <td>
         {this.state.showScoreForm ? (
-          <form onSubmit={this.submitScore}>
-            <input
-              pattern="[0-9]*"
-              name="score"
-              onChange={this.changeScore}
-              placeholder="0"
-              value={this.state.score}
-            ></input>
-            <button>save</button>
-          </form>
+          <>
+            <p>current score: {this.props.roundScore}</p>
+            <form onSubmit={this.submitScore}>
+              <input
+                pattern="[0-9]*"
+                name="score"
+                onChange={this.changeScore}
+                placeholder="0"
+                value={this.state.score}
+              ></input>
+              <button>save</button>
+            </form>
+          </>
         ) : (
-          <p onClick={() => this.toggleScoreForm()}>{this.props.score}</p>
+          <p onClick={() => this.toggleScoreForm()}>{this.props.roundScore}</p>
         )}
       </td>
     );

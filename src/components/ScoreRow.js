@@ -8,6 +8,7 @@ export default function ScoreRow(props) {
         team={props.team}
         index={index}
         score={score}
+        roundScore={props.team.scores[index]}
         updateScore={props.updateScore}
       />
     );
